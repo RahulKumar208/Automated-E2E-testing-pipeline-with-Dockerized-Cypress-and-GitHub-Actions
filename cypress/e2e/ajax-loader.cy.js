@@ -6,7 +6,8 @@ describe('Ajax Loader Test', () => {
         err.message.includes('Unexpected token')
       );
     });
-  
+    
+    //Visit URL
     cy.visit("https://webdriveruniversity.com/Ajax-Loader/index.html");
   });
   
