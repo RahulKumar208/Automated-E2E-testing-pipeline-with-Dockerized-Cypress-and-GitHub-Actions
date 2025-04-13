@@ -7,22 +7,18 @@ on:
     branches: ["main"]
 
 jobs:
-  test:
+  cypress-run:
     runs-on: ubuntu-latest
+    container: cypress/included:14.2.1  # Key fix - uses official Docker image
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm install
-
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          browser: chrome
+        run: |
+          npx cypress run --browser chrome --headless
+        env:
+          # Disables Chrome sandbox which causes issues in CI
+          ELECTRON_EXTRA_LAUNCH_ARGS: --no-sandbox
+          # Forces fresh Chrome install
+          CYPRESS_FORCE_REINSTALL: 1
