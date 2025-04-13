@@ -17,11 +17,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
 
-      - name: Install dependencies (include Cypress)
+      - name: Install dependencies
         run: |
           npm install
-          npx cypress install
+          npm install -g cypress
+          npx cypress verify
 
       - name: Run Cypress tests
-        run: npx cypress run --headless --browser chrome
+        run: |
+          export CYPRESS_RUN_BINARY=$(which cypress)
+          npx cypress run --headless --browser chrome
